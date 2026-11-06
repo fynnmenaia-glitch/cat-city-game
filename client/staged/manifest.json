@@ -1,0 +1,58 @@
+{
+ "updates": [
+  {
+   "id": "u63-village-castle",
+   "title": "The Village Castle",
+   "kind": "feature",
+   "issue": 63,
+   "files": [
+    "u63-village-castle.js"
+   ]
+  },
+  {
+   "id": "u67-report-screenshot",
+   "title": "📸 Screenshots in glitch reports",
+   "kind": "feature",
+   "issue": 67,
+   "files": [
+    "u67-report-screenshot.js"
+   ]
+  },
+  {
+   "id": "cattok-1-phone",
+   "title": "📱 The phone",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-1-phone.js"
+   ]
+  },
+  {
+   "id": "cattok-2-app",
+   "title": "Cat Tok app",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-2-app.js"
+   ]
+  },
+  {
+   "id": "cattok-3-lives",
+   "title": "Cat Tok LIVE",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-3-lives.js"
+   ]
+  },
+  {
+   "id": "cattok-4-news",
+   "title": "Cat City News LIVE",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-4-news.js"
+   ]
+  }
+ ]
+}

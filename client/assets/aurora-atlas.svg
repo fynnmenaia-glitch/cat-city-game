@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="256" viewBox="0 0 512 256" aria-label="Cat City Aurora Atelier original eight-sprite atlas">
+<defs>
+ <linearGradient id="pine" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b3f1ba"/><stop offset=".4" stop-color="#47a993"/><stop offset="1" stop-color="#215e77"/></linearGradient>
+ <linearGradient id="cherry" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe6ef"/><stop offset=".44" stop-color="#f8a4cd"/><stop offset="1" stop-color="#8f71c4"/></linearGradient>
+ <linearGradient id="crystal" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#e7faff"/><stop offset=".44" stop-color="#77d9e9"/><stop offset="1" stop-color="#8178dc"/></linearGradient>
+ <radialGradient id="lamp"><stop stop-color="#fff9bc" stop-opacity=".85"/><stop offset="1" stop-color="#d8aaff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="water" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#a6ece7"/><stop offset="1" stop-color="#6178c8"/></linearGradient>
+</defs>
+<!-- 0: Starlit pine -->
+<g transform="translate(0 0)">
+ <ellipse cx="63" cy="117" rx="38" ry="7" fill="#292a5180"/>
+ <path d="M54 64H73V116H54Z" fill="#634d64" stroke="#382e53" stroke-width="4"/>
+ <path d="M60 69H65V109H60Z" fill="#c18c85"/>
+ <path d="M65 8L29 56H41L18 79H37L12 101H117L91 79H108L84 56H97Z" fill="#284c69" stroke="#283651" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M65 9L36 54H48L27 75H47L23 97H100L79 75H98L79 54H88Z" fill="url(#pine)"/>
+ <path d="M65 9L65 97H24L48 75H27L48 54H36Z" fill="#a6e1af" opacity=".22"/>
+ <path d="M39 59H60M28 80H55M77 44H84M68 79H94" stroke="#c4f7cf" stroke-width="3" opacity=".65"/>
+ <path d="M23 25L26 32L33 35L26 38L23 45L20 38L13 35L20 32Z" fill="#fff3bc"/>
+ <circle cx="92" cy="25" r="3" fill="#e8f9d1"/>
+ <circle cx="105" cy="63" r="2" fill="#fff8e0"/>
+</g>
+<!-- 1: Cotton-candy cherry tree -->
+<g transform="translate(128 0)">
+ <ellipse cx="63" cy="115" rx="41" ry="8" fill="#66436b55"/>
+ <path d="M55 55H72V115H55Z" fill="#795b79" stroke="#55425e" stroke-width="4"/>
+ <path d="M61 62L38 43M68 65L91 42" fill="none" stroke="#795b79" stroke-width="11" stroke-linecap="round"/>
+ <g fill="#815e9f" stroke="#785582" stroke-width="4"><circle cx="39" cy="56" r="25"/><circle cx="79" cy="55" r="26"/><circle cx="63" cy="30" r="28"/><circle cx="63" cy="64" r="31"/></g>
+ <g fill="url(#cherry)"><circle cx="39" cy="51" r="24"/><circle cx="79" cy="51" r="23"/><circle cx="63" cy="27" r="26"/><circle cx="63" cy="59" r="28"/></g>
+ <g fill="#fff6dc" opacity=".95"><circle cx="47" cy="22" r="3"/><circle cx="83" cy="42" r="3"/><circle cx="37" cy="60" r="3"/><circle cx="68" cy="68" r="3"/></g>
+ <g fill="#ffe9f3"><path d="M29 48l3-5 3 5 5 3-5 3-3 5-3-5-5-3z"/><path d="M85 18l2-5 3 5 5 2-5 3-3 5-2-5-5-3z"/></g>
+ <path d="M28 111q6-5 12 0m27 4q6-4 11-1" stroke="#ffd0e7" stroke-width="3" fill="none"/>
+</g>
+<!-- 2: Amethyst moonstone cluster -->
+<g transform="translate(256 0)">
+ <ellipse cx="64" cy="115" rx="45" ry="8" fill="#4b3d8266"/>
+ <path d="M15 103L28 90L44 94L53 84L77 90L96 88L116 102L105 118H26Z" fill="#6d6b91" stroke="#47446d" stroke-width="4"/>
+ <path d="M35 97L29 41L50 11L70 44L64 102Z" fill="#a7c2ff" stroke="#5966a7" stroke-width="5"/>
+ <path d="M50 12L50 94L65 101L70 44Z" fill="url(#crystal)"/>
+ <path d="M27 105L16 69L33 45L48 73L42 109Z" fill="#b18ee6" stroke="#7167b1" stroke-width="4"/>
+ <path d="M33 46L34 99L44 107L48 73Z" fill="#f2d8ff"/>
+ <path d="M72 108L70 61L90 30L110 65L101 107Z" fill="#72c8e8" stroke="#586da7" stroke-width="5"/>
+ <path d="M90 31L90 103L101 107L110 65Z" fill="#d2f9ff"/>
+ <path d="M49 26L42 44M91 45L82 63" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+ <path d="M112 15l3 6 6 3-6 3-3 7-3-7-7-3 7-3z" fill="#fff9c3"/>
+</g>
+<!-- 3: Twilight mushroom cluster -->
+<g transform="translate(384 0)">
+ <ellipse cx="62" cy="115" rx="43" ry="7" fill="#4b3d8266"/>
+ <path d="M39 57H61L58 112H42ZM74 75H92L91 110H76Z" fill="#fff0dd" stroke="#7f7297" stroke-width="4"/>
+ <path d="M28 58Q32 21 51 18Q78 24 77 57L72 66H32Z" fill="#604c9d" stroke="#45386c" stroke-width="5"/>
+ <path d="M31 52Q38 25 52 24Q68 28 74 52Z" fill="#ab8de0"/>
+ <path d="M63 81Q67 51 83 51Q102 55 106 81L101 87H66Z" fill="#4c91a1" stroke="#3c5978" stroke-width="4"/>
+ <path d="M68 77Q74 57 84 57Q98 60 102 77Z" fill="#7cdae1"/>
+ <g fill="#fff5d9"><circle cx="43" cy="42" r="5"/><circle cx="60" cy="35" r="4"/><circle cx="88" cy="68" r="4"/><circle cx="79" cy="77" r="3"/></g>
+ <path d="M20 109l-4-13m15 13l-3-10m82 10l5-13" stroke="#72ab95" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="23" cy="24" r="4" fill="#ffedc0"/><circle cx="104" cy="32" r="3" fill="#d4b8ff"/>
+</g>
+<!-- 4: Moon lantern, village prop -->
+<g transform="translate(0 128)">
+ <ellipse cx="64" cy="116" rx="34" ry="6" fill="#44365b66"/>
+ <rect x="57" y="35" width="13" height="80" rx="3" fill="#514365" stroke="#392c4c" stroke-width="3"/>
+ <path d="M64 42V28Q64 20 74 20H88" fill="none" stroke="#514365" stroke-width="7" stroke-linecap="round"/>
+ <circle cx="89" cy="38" r="42" fill="url(#lamp)"/>
+ <path d="M73 22H107L110 29L103 55H77L69 29Z" fill="#664e80" stroke="#352e53" stroke-width="4"/>
+ <path d="M79 29H102L100 49H82Z" fill="#ffe7a0" stroke="#fff9dc" stroke-width="2"/>
+ <path d="M89 32A9 9 0 1 0 98 46A7 7 0 1 1 89 32Z" fill="#d2a1ce"/>
+ <path d="M80 30L76 52M101 30L105 52" stroke="#725b81" stroke-width="3"/>
+ <path d="M48 112H79V119H48Z" fill="#79627c"/>
+ <path d="M30 102l-4 5m12 3l3-5m48-7l5 4" stroke="#91c59d" stroke-width="3"/>
+</g>
+<!-- 5: Lily pool -->
+<g transform="translate(128 128)">
+ <ellipse cx="65" cy="89" rx="57" ry="30" fill="#486c83" stroke="#e8d1fa" stroke-width="5"/>
+ <ellipse cx="63" cy="85" rx="49" ry="23" fill="url(#water)"/>
+ <g fill="#6eb69c" stroke="#397c7b" stroke-width="3"><path d="M22 87a19 11 0 1 1 20 14l-9-13z"/><path d="M77 78a22 12 0 1 1 22 18l-11-14z"/></g>
+ <g fill="#ffd0e9" stroke="#f7a4ca" stroke-width="2"><path d="M51 77q-15-23-5-26q12 2 11 20q8-23 17-18q7 9-9 25q16-12 21-2q-6 15-25 13q-17 5-22-8z"/></g>
+ <ellipse cx="62" cy="81" rx="9" ry="5" fill="#fff1ac"/>
+ <path d="M20 103q9-3 19 0m49 5q9-2 19-1" stroke="#d6fcfb" stroke-width="3" fill="none"/>
+ <g fill="#fffbe1"><circle cx="34" cy="61" r="3"/><circle cx="101" cy="56" r="2"/></g>
+</g>
+<!-- 6: Enchanted hedgerow and blossoms -->
+<g transform="translate(256 128)">
+ <ellipse cx="63" cy="116" rx="45" ry="8" fill="#263d5366"/>
+ <path d="M18 94Q14 75 30 68Q29 49 45 46Q58 28 74 47Q98 42 103 65Q116 77 106 100L96 111H31Z" fill="#2b5675" stroke="#304058" stroke-width="5"/>
+ <path d="M22 89Q19 73 35 66Q36 48 53 51Q62 34 75 52Q95 51 97 71Q110 82 102 99H34Z" fill="#66b8a2"/>
+ <path d="M34 84q12-26 31-14q8-17 27-8" fill="none" stroke="#aee1bb" stroke-width="8" opacity=".8"/>
+ <g fill="#f7b9d8" stroke="#ffe6ef" stroke-width="2"><circle cx="42" cy="77" r="7"/><circle cx="78" cy="63" r="6"/><circle cx="93" cy="89" r="7"/></g>
+ <g fill="#fff1ac"><circle cx="43" cy="77" r="2"/><circle cx="78" cy="63" r="2"/><circle cx="93" cy="89" r="2"/></g>
+ <path d="M14 28l3 6 6 2-6 3-3 6-3-6-6-3 6-2z" fill="#ffe6ac"/>
+</g>
+<!-- 7: Cat City crest / Quest 20 arch -->
+<g transform="translate(384 128)">
+ <ellipse cx="64" cy="117" rx="50" ry="7" fill="#4e3b7255"/>
+ <path d="M17 113V44Q17 14 64 10Q111 14 111 44V113" fill="none" stroke="#473755" stroke-width="12"/>
+ <path d="M17 113V44Q17 14 64 10Q111 14 111 44V113" fill="none" stroke="#ffdca6" stroke-width="6"/>
+ <path d="M33 52l12-17 18 10 18-10 14 17-4 38-28 20-28-20z" fill="#73589c" stroke="#edd6ff" stroke-width="3"/>
+ <path d="M45 63L51 53L61 61L72 53L82 63L80 83L63 93L47 83Z" fill="#ffdfaa"/>
+ <path d="M52 73h7m10 0h7" stroke="#3b3657" stroke-width="4" stroke-linecap="round"/>
+ <path d="M63 77l-4 4 4 3 4-3z" fill="#f39eac"/>
+ <path d="M37 23l4-7 4 7 7 4-7 4-4 7-4-7-6-4zM93 19l3-5 3 5 5 3-5 3-3 5-3-5-5-3z" fill="#fff3bf"/>
+ <path d="M21 113h86" stroke="#473755" stroke-width="8" stroke-linecap="round"/>
+</g>
+</svg>

@@ -1,0 +1,42 @@
+name: Cat City adventure and worker checks
+on:
+  push:
+    branches: [main, "feature/**", "fix/**"]
+  pull_request:
+    branches: [main]
+jobs:
+  ai-backend-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install backend dependencies
+        run: pip install -r requirements.txt
+      - name: Compile Python source
+        run: python -m py_compile server.py accounts.py social.py tag_house.py ai_cats.py bot_adventure.py glitch_reports.py update_requests.py releases.py glitch_screens.py
+      - name: Check JavaScript syntax
+        run: |
+          for f in client/*.js; do node --check "$f"; done
+      - name: Check HTML inline JavaScript
+        run: |
+          node - <<'JS'
+          const fs = require('fs'), vm = require('vm');
+          const html=fs.readFileSync('client/index.html','utf8');
+          const rx=/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
+          let m,total=0;
+          while((m=rx.exec(html))!==null){
+            if(/\bsrc\s*=/.test(m[1]) || /type=["']application\/json/.test(m[1]))continue;
+            new vm.Script(m[2],{filename:'inline script '+(++total)});
+          }
+          console.log('Checked '+total+' inline scripts');
+          JS
+      - name: Run five-player, AI worker and Tag House integration tests
+        env:
+          CATCITY_LLM_ENABLED: '0'
+        run: python -m unittest discover -s tests -v

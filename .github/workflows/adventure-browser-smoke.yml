@@ -1,0 +1,35 @@
+name: Cat City browser gameplay smoke
+on:
+  push:
+    branches: ["feature/full-adventure-bot-update-2026-11-03", "feature/terraria-inventory-world-polish-2026-11-03", "fix/six-cats-harley-skyler-pumpkin-boss-toast-2026-11-03", "fix/mobile-stamina-below-hotbar-2026-11-03" , "feature/squishems-plush-event-worlds-2026-11-03", "fix/scroll-squishem-guides-event-decor-2026-11-03", "feature/squishem-museum-live-event-questboard-2026-11-04", "fix/six-player-lobbies-inline-vote-2026-11-04"]
+  pull_request:
+    branches: [main]
+jobs:
+  real-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gameplay and browser dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install playwright
+          # The system-package step sometimes hangs on GitHub's side: give it up to 8 minutes,
+          # then retry; the browser itself is downloaded separately.
+          for i in 1 2; do timeout 480 python -m playwright install-deps chromium && break; echo "install-deps try $i failed, retrying"; sudo dpkg --configure -a || true; sleep 5; done
+          python -m playwright install chromium
+      - name: Start Cat City server
+        run: |
+          PORT=8765 python server.py > /tmp/cat-city.log 2>&1 &
+          curl --retry 35 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:8765/health
+      - name: Run headless Chromium iPhone viewport smoke test
+        run: python tests/browser_smoke.py
+      - name: Test Squishem collecting, timed caves, pumpkin huts and bonuses
+        run: python tests/squishems_browser.py
+      - name: Test mobile swipe scrolling, Where hints and temporary world decorations
+        run: python tests/ui_scroll_event_decor.py
+      - name: Test museum rewards, event token shop and repeatable adventure quests
+        run: python tests/museum_events_quests_browser.py
