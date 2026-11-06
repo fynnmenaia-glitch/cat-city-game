@@ -5,7 +5,7 @@ kept in memory for the owner's admin panel and, when Render has the
 GITHUB_REPORT_TOKEN environment variable (a fine-grained GitHub token with
 Issues read/write on this repo), each one also becomes a GitHub issue labelled
 "glitch-report" so the hourly glitch check can find and fix it.
-Optional: GITHUB_REPORT_REPO (default elijahmenaia-stack/Cat-city-project-online).
+Optional: GITHUB_REPORT_REPO (default fynnmenaia-glitch/cat-city-game).
 
 Reports are also saved in the game's Postgres database (the same one as
 accounts and cloud saves, when DATABASE_URL is set), so a restart or redeploy
@@ -26,7 +26,7 @@ from aiohttp import ClientSession, ClientTimeout, web
 from accounts import limited, same_origin
 
 LOG = logging.getLogger('catcity.glitch')
-REPO = os.environ.get('GITHUB_REPORT_REPO', 'elijahmenaia-stack/Cat-city-project-online')
+REPO = os.environ.get('GITHUB_REPORT_REPO', 'fynnmenaia-glitch/cat-city-game')
 REPORTS: deque = deque(maxlen=200)
 CONTROL = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
 

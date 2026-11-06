@@ -21,7 +21,7 @@ from accounts import limited, same_origin
 from glitch_reports import REPORTS
 
 LOG = logging.getLogger('catcity.glitch')
-REPO = os.environ.get('GITHUB_REPORT_REPO', 'elijahmenaia-stack/Cat-city-project-online')
+REPO = os.environ.get('GITHUB_REPORT_REPO', 'fynnmenaia-glitch/cat-city-game')
 BRANCH = 'glitch-screenshots'
 PREFIX = 'data:image/jpeg;base64,'
 MAX_BYTES = 180_000  # the server accepts requests up to 256 KB, base64 included

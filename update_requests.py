@@ -22,7 +22,7 @@ from aiohttp import ClientSession, ClientTimeout, web
 from accounts import limited, same_origin
 
 LOG = logging.getLogger('catcity.updates')
-REPO = os.environ.get('GITHUB_REPORT_REPO', 'elijahmenaia-stack/Cat-city-project-online')
+REPO = os.environ.get('GITHUB_REPORT_REPO', 'fynnmenaia-glitch/cat-city-game')
 MARKER = 'cat-city-owner-update-request'
 REQUESTS: deque = deque(maxlen=50)
 CONTROL = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
