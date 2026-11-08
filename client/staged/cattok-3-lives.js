@@ -72,9 +72,10 @@ function openLive(it){closeLive();const app=T.app;if(!app)return;const L=state(i
  // Viewers come and go, comments roll in, other viewers send hearts.
  const pool=(it.comments||[]).concat(CHAT),r=T.rng(it.id+Date.now());
  sys(it.welcome||'Welcome to the LIVE! Be kind and have fun 💖');comment(T.myName(),'joined 👋',T.myCat(),true,true);
+ if(!it.real){// real players' lives (part 8) get their viewers, comments and hearts from the server instead
  timers.push(setInterval(()=>{L.viewers=Math.max(20,Math.round(L.viewers*(.985+r()*.03)+(r()-.45)*8));room.querySelector('[data-v]').textContent=T.fmt(L.viewers)},1500));
  timers.push(setInterval(()=>{const n=NAMES[Math.floor(r()*NAMES.length)];if(r()<.18)comment(n,'joined 👋',null,false,true);else comment(n,pool[Math.floor(r()*pool.length)])},1100));
- timers.push(setInterval(()=>{if(r()<.7){floatHeart();L.likes+=Math.floor(1+r()*4);room.querySelector('[data-likes]').textContent='❤ '+T.fmt(L.likes)}},420));
+ timers.push(setInterval(()=>{if(r()<.7){floatHeart();L.likes+=Math.floor(1+r()*4);room.querySelector('[data-likes]').textContent='❤ '+T.fmt(L.likes)}},420));}
  const cv=room.querySelector('canvas');const t0=performance.now();
  const loop=now=>{if(!room)return;T.drawCrisp(cv,it,(now-t0)/1000);raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);
  addEventListener('keydown',liveKeys,true);it.onEnter?.(L,room)}
@@ -96,7 +97,7 @@ const H={
  ticker(g,W,y,h,text,t,o={}){g.fillStyle=o.bg||'#111';g.fillRect(0,y,W,h);g.save();g.beginPath();g.rect(0,y,W,h);g.clip();g.font='bold '+(o.size||8)+'px "Cat City Pixel",monospace';g.fillStyle=o.color||'#fff';g.textAlign='left';const w=g.measureText(text).width+40,x=W-((t*(o.speed||28))%(w+W));g.fillText(text,x,y+h-3);g.fillText(text,x+w+W,y+h-3);g.restore()},
  studioLight(g,W,H,t,col='#ffffff'){g.save();g.globalAlpha=.06+.03*Math.sin(t*2);g.fillStyle=col;g.beginPath();g.moveTo(W*.2,0);g.lineTo(W*.45,0);g.lineTo(W*.7,H*.75);g.lineTo(W*.1,H*.75);g.fill();g.restore()}
 };
-T.addLive=addLive;T.openLive=openLive;T.closeLive=closeLive;T.live={...H,comment:(n,t)=>comment(n,t),sys,state};
+T.addLive=addLive;T.openLive=openLive;T.closeLive=closeLive;T.live={...H,comment:(n,t,av)=>comment(n,t,av),sys,state,floatHeart:()=>floatHeart(),room:()=>room};
 window.dispatchEvent(new CustomEvent('catcity:cattok-lives-ready'));
 };
 if(window.CatTok)start();else addEventListener('catcity:cattok-ready',start,{once:true});

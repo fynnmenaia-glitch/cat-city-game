@@ -139,6 +139,7 @@ const css=document.createElement('style');css.textContent=`
 .ctc-field input[type=text]{width:100%;border:1px solid #ddd!important;border-radius:8px!important;padding:10px!important;font:14px system-ui!important;background:#fff;color:#161823;box-sizing:border-box}
 .ctc-field input[type=range]{flex:1}
 .ctc-field select{border:1px solid #ddd!important;border-radius:8px!important;padding:8px!important;font:14px system-ui!important;background:#fff;color:#161823;max-width:60%}
+.ct .ctc-post,.ctc-post{color:#fff!important}
 .ctc-post{display:block;width:calc(100% - 28px);margin:14px auto 0;border-radius:8px!important;padding:14px 0;background:#fe2c55!important;color:#fff;font:800 16px system-ui}
 .ctc-note{font:12px system-ui;color:#8a8b91;padding:2px 14px}
 .ctc-sw{position:relative;width:46px;height:28px;border-radius:14px;background:#ddd;flex:none;transition:background .2s}.ctc-sw.on{background:#20d5ec}.ctc-sw::after{content:'';position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px #0003}.ctc-sw.on::after{left:21px}
@@ -160,10 +161,10 @@ function createPage(el){cancelAnimationFrame(prevRaf);if(!draft.cat)draft.cat=my
  el.innerHTML='<div class="ctc"><h2>Create</h2><div class="sub">Make a video up to 30 seconds</div><div class="ctc-two"><button class="ctc-big" data-m="set"><i>🎬</i>Use a set<small>Templates + backgrounds</small></button><button class="ctc-big" data-m="game"><i>🎮</i>Record gameplay<small>Film yourself playing</small></button></div>'+
   '<div class="ctc-sec">Your creator stats</div><div class="ctc-note">'+(CS.posted||0)+' videos posted · '+(T.state.followers||0)+' followers'+(ME.verified||owner()?' · <b style="color:#20d5ec">✔ Verified</b>: you can go LIVE':' · not verified yet (the owner verifies creators, then you can go LIVE)')+'</div>'+
   '<div class="ctc-sec">🤝 Sponsors</div>'+SPONSORS.map(sp=>'<div class="ctc-note">'+(sponsorOk(sp)?'✅ <b>'+sp.name+'</b> sponsors you · '+sp.boost+'× boost':'🔒 '+sp.name+' ('+sp.boost+'×): '+esc(sponsorNeed(sp)))+'</div>').join('')+
-  (window.CatTokLive&&(ME.verified||owner())?'<button class="ctc-post" data-live style="background:#161823!important">🔴 Go LIVE</button>':'')+'</div>';
+  (window.CatTokLive&&(ME.verified||owner())?'<button class="ctc-post" data-gostart style="background:#161823!important">🔴 Go LIVE</button>':'')+'</div>';
  el.querySelector('[data-m="set"]').onclick=()=>{draft.mode='set';setPage(el)};
  el.querySelector('[data-m="game"]').onclick=()=>gamePage(el);
- el.querySelector('[data-live]')?.addEventListener('click',()=>window.CatTokLive?.start?.())}
+ el.querySelector('[data-gostart]')?.addEventListener('click',()=>window.CatTokLive?.start?.())}
 function chip(on,lock,icon,name,attr){return '<button class="ctc-chip'+(on?' on':'')+(lock?' lock':'')+'" '+attr+'><i>'+icon+'</i>'+esc(name)+(lock?' 🔒':'')+'</button>'}
 function setPage(el){cancelAnimationFrame(prevRaf);
  el.innerHTML='<div class="ctc"><h2>🎬 On a set</h2><div class="ctc-prev"><canvas width="180" height="320"></canvas></div>'+

@@ -80,6 +80,15 @@
    "files": [
     "cattok-7-create.js"
    ]
+  },
+  {
+   "id": "cattok-8-golive",
+   "title": "🔴 Go LIVE + gifts",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-8-golive.js"
+   ]
   }
  ]
 }
