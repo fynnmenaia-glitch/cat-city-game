@@ -21,6 +21,7 @@ from glitch_reports import install as install_glitch_reports
 from glitch_screens import install as install_glitch_screens
 from update_requests import install as install_update_requests
 from releases import install as install_releases
+from cattok import install as install_cattok
 import social
 from social import SocialService, clean as clean_chat
 from ai_cats import make_lobbies
@@ -912,6 +913,7 @@ def make_app():
     install_update_requests(app, ACCOUNTS)
     if not DEMO:  # staged updates and the 🚀 Release button belong to the main game only
         install_releases(app, ACCOUNTS)
+        install_cattok(app, ACCOUNTS, clean_chat)
     SOCIAL.routes(app)
     app.cleanup_ctx.append(ACCOUNTS.startup)
     app.cleanup_ctx.append(background)

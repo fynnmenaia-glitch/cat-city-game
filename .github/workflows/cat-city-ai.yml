@@ -19,7 +19,7 @@ jobs:
       - name: Install backend dependencies
         run: pip install -r requirements.txt
       - name: Compile Python source
-        run: python -m py_compile server.py accounts.py social.py tag_house.py ai_cats.py bot_adventure.py glitch_reports.py update_requests.py releases.py glitch_screens.py
+        run: python -m py_compile server.py accounts.py social.py tag_house.py ai_cats.py bot_adventure.py glitch_reports.py update_requests.py releases.py glitch_screens.py cattok.py
       - name: Check JavaScript syntax
         run: |
           for f in client/*.js; do node --check "$f"; done
