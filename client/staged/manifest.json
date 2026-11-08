@@ -53,6 +53,24 @@
    "files": [
     "cattok-4-news.js"
    ]
+  },
+  {
+   "id": "cattok-5-clock",
+   "title": "🕐 Game clock",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-5-clock.js"
+   ]
+  },
+  {
+   "id": "cattok-6-shop",
+   "title": "🛍️ Cat Tok Shop + parcels",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-6-shop.js"
+   ]
   }
  ]
 }
