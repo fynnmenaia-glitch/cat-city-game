@@ -71,6 +71,15 @@
    "files": [
     "cattok-6-shop.js"
    ]
+  },
+  {
+   "id": "cattok-7-create",
+   "title": "🎬 Make Cat Tok videos + sponsors",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-7-create.js"
+   ]
   }
  ]
 }

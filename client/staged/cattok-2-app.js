@@ -190,8 +190,10 @@ function buildFeed(){if(!app)return;const feed=app.querySelector('.ct-feed');obs
 // Crisp text: the pixel art is drawn 180 px wide and scaled up, which made words blurry and blocky.
 // crisp(cv) adds a sharp, high-resolution canvas on top; any text the scene draws goes there in a normal font.
 const CRISP_K=4,MIRROR=new Set(['save','restore','translate','scale','rotate','transform','beginPath','closePath','rect','moveTo','lineTo','arc','arcTo','ellipse','quadraticCurveTo','bezierCurveTo','clip']),TEXTFN=new Set(['fillText','strokeText','measureText']),TPROPS=new Set(['textAlign','textBaseline','fillStyle','strokeStyle','lineWidth','lineJoin','globalAlpha','shadowColor','shadowBlur','shadowOffsetX','shadowOffsetY','direction','letterSpacing']);
-const READ_FONT='-apple-system,system-ui,"Segoe UI",Roboto,sans-serif';
-function fixFont(f){return String(f).replace(/"Cat City Pixel"\s*,?\s*monospace|"Cat City Pixel"|\bmonospace\b/g,READ_FONT)}
+// pixel-emoji.js turns canvas fonts naming system-ui / sans-serif / Arial / Helvetica into the pixel font,
+// so the readable font list deliberately names none of those.
+const READ_FONT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",Ubuntu,"DejaVu Sans"';
+function fixFont(f){return String(f).replace(/("Cat City Pixel"\s*,?\s*)?(monospace|system-ui|sans-serif|Arial|Helvetica)(\s*,\s*(monospace|system-ui|sans-serif|Arial|Helvetica))*|"Cat City Pixel"/g,READ_FONT)}
 function crisp(cv,k=CRISP_K,txt){if(cv.__crisp&&!txt)return cv.__crisp;const g=cv.getContext('2d');
  if(!txt){txt=document.createElement('canvas');txt.className='ct-txt';cv.after(txt)}
  txt.width=cv.width*k;txt.height=cv.height*k;const t=txt.getContext('2d');t.lineJoin='round';
@@ -234,7 +236,7 @@ function card(it){const el=document.createElement('div');el.className='ct-item';
   if(now-lastTap<300){clearTimeout(tapT);if(!st.likes[it.id])toggleLike(it,el);burst(el,e)}
   else tapT=setTimeout(()=>{if(it.kind==='live'&&window.CatTok.openLive)window.CatTok.openLive(it);else{it.paused=!it.paused;flashPause(el,it.paused)}},300);lastTap=now});
  return el}
-function toggleLike(it,el){st.likes[it.id]=!st.likes[it.id];save();const b=el.querySelector('[data-a="like"]');b.classList.toggle('liked',!!st.likes[it.id]);b.querySelector('.i').textContent=st.likes[it.id]?'❤️':'🤍';b.lastChild.textContent=fmt(it.likes+(st.likes[it.id]?1:0));if(st.likes[it.id])window.catCitySfx?.('pop')}
+function toggleLike(it,el){st.likes[it.id]=!st.likes[it.id];save();try{it.onLike?.(it,!!st.likes[it.id])}catch(e){}const b=el.querySelector('[data-a="like"]');b.classList.toggle('liked',!!st.likes[it.id]);b.querySelector('.i').textContent=st.likes[it.id]?'❤️':'🤍';b.lastChild.textContent=fmt(it.likes+(st.likes[it.id]?1:0));if(st.likes[it.id])window.catCitySfx?.('pop')}
 function burst(el,e){const r=el.getBoundingClientRect(),h=document.createElement('div');h.className='ct-heart';h.textContent='❤️';h.style.left=(e.clientX-r.left)+'px';h.style.top=(e.clientY-r.top)+'px';el.append(h);setTimeout(()=>h.remove(),850)}
 function flashPause(el,p){let d=el.querySelector('.ct-pause');if(!d){d=document.createElement('div');d.className='ct-pause';d.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:64px;opacity:.75;pointer-events:none;z-index:3;text-shadow:0 2px 8px #000';el.append(d)}d.textContent=p?'▶':'';}
 // Only the item on screen animates (and the ones next to it draw once), to keep phones cool.
@@ -313,7 +315,7 @@ const starters=[
 for(const v of starters)addItem({kind:'video',...v});
 
 // ---------------------------------------------------------------- the app on the phone
-const api={crisp,drawCrisp,fixFont,screenH:()=>screenH(),addItem,items,open:()=>window.CatPhone?.open('cattok'),inbox:pushInbox,avatar,rng,state:st,save,refresh:buildFeed,pageHooks,go:p=>app&&go(p),toast,caption,sky,mix,R,fmt,myName,myCat,sheet,closeSheet,thumb,get app(){return app}};
+const api={jumpTo:id=>app&&jumpTo(id),crisp,drawCrisp,fixFont,screenH:()=>screenH(),addItem,items,open:()=>window.CatPhone?.open('cattok'),inbox:pushInbox,avatar,rng,state:st,save,refresh:buildFeed,pageHooks,go:p=>app&&go(p),toast,caption,sky,mix,R,fmt,myName,myCat,sheet,closeSheet,thumb,get app(){return app}};
 window.CatTok=api;
 function register(){window.CatPhone?.registerApp({id:'cattok',name:'Cat Tok',icon:window.__catPhoneIcons?.tok||'',open(view){openCount++;open(view)},close})}
 if(window.CatPhone)register();else addEventListener('catcity:phone-ready',register,{once:true});
