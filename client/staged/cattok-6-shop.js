@@ -207,7 +207,7 @@ function checkout(){const tt=totals();if(fishNow()<tt.total){T.toast('🐟 You n
 function placeOrder(items,paid,from){const now=Date.now(),o={id:'o'+now.toString(36)+Math.floor(Math.random()*1e4).toString(36),items,paid,from,at:now,arriveAt:now+DAY(),status:'shipping'};
  SH.orders.unshift(o);SH.orders=SH.orders.slice(0,40);if(!SH.first)SH.first=now;core.persist();window.catCitySfx?.('buy');
  const when=CLOCK()?CLOCK().now(o.arriveAt).label:'soon';T.inbox('📦','Order placed!','Arrives '+when+' · '+itemsText(items),null);window.dispatchEvent(new CustomEvent('catcity:cattok-order',{detail:o}));return o}
-const itemsText=items=>items.map(i=>(BY[i.id]?.icon||'📦')+' '+(BY[i.id]?.name||i.id)+(i.qty>1?' ×'+i.qty:'')).join(', ');
+const itemsText=items=>items.map(i=>{const c=BY[i.id],n=c?.qtyGives?Math.round(i.qty/c.qtyGives):i.qty;return (c?.icon||'📦')+' '+(c?.name||i.id)+(n>1?' ×'+n:'')}).join(', ');
 // Buying from a live (part 9): one item at a special price, straight to an order.
 function buy(id,o={}){const c=BY[id];if(!c)return false;const price=Math.max(0,Math.round(o.price??priceOf(id)));if(fishNow()<price){T.toast?.('🐟 You need '+(price-fishNow())+' more fish');return false}
  s.fish=fishNow()-price;placeOrder([{id,qty:(c.qtyGives||1)*(o.qty||1)}],price,o.from||'live');return true}

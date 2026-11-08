@@ -89,6 +89,15 @@
    "files": [
     "cattok-8-golive.js"
    ]
+  },
+  {
+   "id": "cattok-9-sales",
+   "title": "🍑 Peachy Paws LIVE + 🌌 Galaxy's ASMR LIVE",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-9-sales.js"
+   ]
   }
  ]
 }
