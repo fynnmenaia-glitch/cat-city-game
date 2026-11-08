@@ -136,10 +136,12 @@ const decorOf=id=>{const d=s.homeDecor[id]||(s.homeDecor[id]={floor:[],wall:[],p
 function drawFloor(kit,id,x,y,t){const {SPR}=kit,g=window.catCityInteriors.kit.ctx(),R=window.catCityInteriors.kit.R;
  if(id==='lamp')SPR.lamp(x,y-16);else if(id==='globe')SPR.globe(x,y);else if(id==='trophy')SPR.trophy(x,y+2);else if(id==='teddy')SPR.teddy(x,y);else if(id==='lantern')SPR.lantern(x,y,t);else if(id==='chest')SPR.chest(x-3,y+2);else if(id==='plant')SPR.plant(x,y);else if(id==='crystal')SPR.crystalBall(x-2,y+2,t);
  else if(id==='candles'){SPR.candle(x+2,y+10,t);SPR.candle(x+9,y+12,t+.3)}
- else if(id==='cushion'){R(x-1,y+9,20,11,'#2a1d33');R(x,y+10,18,9,'#e47c9a');R(x+2,y+11,14,2,'#f7cfdc');R(x+8,y+13,2,2,'#c94c5a')}}
+ else if(id==='cushion'){R(x-1,y+9,20,11,'#2a1d33');R(x,y+10,18,9,'#e47c9a');R(x+2,y+11,14,2,'#f7cfdc');R(x+8,y+13,2,2,'#c94c5a')}
+ else window.catCityDecorArt?.floor?.[id]?.(R,x,y,t)}
 function drawWall(kit,id,x,y,t){const {SPR}=kit,R=window.catCityInteriors.kit.R;
  if(id==='painting_sea')SPR.painting(x,y,'#7ec8e3');else if(id==='painting_rose')SPR.painting(x,y,'#f7a6bd');else if(id==='moonwindow')SPR.moonWindow(x-4,y-4);else if(id==='ribbon')SPR.ribbon(x+4,y+2);
- else if(id==='clock'){R(x+2,y,16,16,'#2a1d33');R(x+3,y+1,14,14,'#fff3d0');R(x+9,y+3,2,6,'#2a1d33');const a=t*.5;R(x+10+Math.round(Math.cos(a)*4),y+8+Math.round(Math.sin(a)*4),2,2,'#c94c5a')}}
+ else if(id==='clock'){R(x+2,y,16,16,'#2a1d33');R(x+3,y+1,14,14,'#fff3d0');R(x+9,y+3,2,6,'#2a1d33');const a=t*.5;R(x+10+Math.round(Math.cos(a)*4),y+8+Math.round(Math.sin(a)*4),2,2,'#c94c5a')}
+ else window.catCityDecorArt?.wall?.[id]?.(R,x,y,t)}
 function drawPet(kind,t,R){
  if(kind==='goldfish'){const x=258,y=114;R(x-1,y+5,24,17,'#2a1d33');R(x,y+6,22,15,'#bfe8ff');R(x,y+12,22,9,'#7ec8e3');const fx=x+4+Math.round((Math.sin(t*1.3)+1)*6);R(fx,y+13,5,3,'#ff8a3c');R(fx+(Math.cos(t*1.3)>0?-2:5),y+13,2,3,'#ff8a3c');R(x-2,y+21,26,3,'#7a5235');return {x:269,y:138}}
  if(kind==='bird'){const x=160+Math.round(Math.sin(t*.6)*90),y=40+Math.round(Math.sin(t*1.7)*10),f=Math.floor(t*8)%2;R(x,y,8,6,'#5ab0e0');R(x+6,y+1,3,2,'#ffd45c');R(x+2,y-(f?2:0),4,2,'#3b8ac0');R(x+5,y+1,1,1,'#2a1d33');return {x,y:200}}
@@ -152,7 +154,7 @@ window.catCityHomeExtras=(o,kit)=>{
  const {item,SPR,say}=kit;const R=window.catCityInteriors.kit.R;const out=[];
  const visit=o.visit,D=visit||decorOf(o.id);
  (D.wall||[]).slice(0,2).forEach((w,i)=>{const [x,y]=WS[i];out.push(item({x,y,w:20,h:16,draw:t=>drawWall(kit,w,x,y,t),solid:false,wall:true}))});
- (D.floor||[]).slice(0,6).forEach((f,i)=>{const [x,y]=FS[i];out.push(item({x,y,w:16,h:20,draw:t=>drawFloor(kit,f,x,y,t),solid:false,base:y+20}))});
+ (D.floor||[]).slice(0,6).forEach((f,i)=>{const [x,y]=FS[i],u=!visit&&window.catCityDecorArt?.use?.[f];out.push(item({x,y,w:16,h:20,draw:t=>drawFloor(kit,f,x,y,t),solid:false,base:y+20,...(u?{label:u.label,use:()=>{kit.leave(true);u.use()},useX:x+8,useY:y+30}:{})}))});
  if(D.pet){let last={x:160,y:150};const pet=item({x:0,y:0,w:1,h:1,solid:false,draw:t=>{last=drawPet(D.pet,t,R)},label:'Pet your '+(PETS[D.pet]?.[0]||'pet').replace(/^\S+\s/,'').toLowerCase(),use:()=>{say(visit?'💕 '+(PETS[D.pet]?.[0]||'pet')+' loves the attention!':'💕 You pet your '+(PETS[D.pet]?.[0]||'pet')+'. It looks so happy!');window.catCitySfx('heal')}});
   // The pet moves, so where it's drawn and where you stand to pet it follow it.
   Object.defineProperties(pet,{base:{get:()=>D.pet==='bird'?260:last.y},useX:{get:()=>D.pet==='goldfish'?269:last.x},useY:{get:()=>D.pet==='goldfish'?140:D.pet==='bird'?190:last.y+8}});out.push(pet)}
@@ -160,6 +162,7 @@ window.catCityHomeExtras=(o,kit)=>{
  out.push(item({x:226,y:92,w:14,h:20,draw:()=>{R(229,98,8,14,'#7a5235');R(225,92,16,8,'#2a1d33');R(226,93,14,6,'#f4efe2');R(232,93,1,6,'#c9963a')},label:'📒 Home catalogue: furniture, pets & visits',use:()=>{kit.leave(true);catalogue(o.id)},useX:233,useY:120}));
  if(!o.kitchen)out.push(item({x:58,y:146,w:32,h:28,draw:t=>SPR.cauldron(58,146,t),label:'🍲 Cook something tasty',use:()=>{kit.leave(true);cook()},useX:74,useY:182}));
  return out};
+window.catCityCozy={recipes:RECIPES,floor:FLOOR,wall:WALL,decorOf,shareHome:h=>shareHome(h),snackButton:()=>snackBtn()};
 function catalogue(home){const D=decorOf(home);
  dialog('📒','Home catalogue','You have 🐟 '+Math.floor(s.fish||0)+'. Furniture: '+D.floor.length+'/6 · Wall: '+D.wall.length+'/2 · Pet: '+(D.pet?PETS[D.pet][0]:'none'),[
   ['🪑 Furniture',()=>shop(home,'floor')],['🖼️ Wall decorations',()=>shop(home,'wall')],['🐾 Adopt a pet',()=>shop(home,'pet')],

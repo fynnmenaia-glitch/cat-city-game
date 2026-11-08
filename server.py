@@ -21,6 +21,7 @@ from glitch_reports import install as install_glitch_reports
 from glitch_screens import install as install_glitch_screens
 from update_requests import install as install_update_requests
 from releases import install as install_releases
+from cattok import install as install_cattok
 import social
 from social import SocialService, clean as clean_chat
 from ai_cats import make_lobbies
@@ -395,6 +396,19 @@ async def font_file(request):
 
 async def voice_lines_script(_request):
     return web.FileResponse(PUBLIC / 'voice-lines.js', headers={'Cache-Control': 'no-cache'})
+
+
+async def cattok_lite_script(request):
+    # The demo's small Cat Tok (tools/build_demo.py copies four Cat Tok parts into demo/cattok-lite/).
+    name = request.match_info['name']
+    path = PUBLIC / 'cattok-lite' / name
+    if not re.fullmatch(r'cattok-[0-9]+-[a-z]+\.js', name) or not path.is_file():
+        raise web.HTTPNotFound()
+    return web.FileResponse(path, headers={'Cache-Control': 'no-cache'})
+
+
+async def pixel_caves_script(_request):
+    return web.FileResponse(PUBLIC / 'pixel-caves.js', headers={'Cache-Control': 'no-cache'})
 
 
 async def levels_script(_request):
@@ -893,6 +907,8 @@ def make_app():
     app.router.add_get('/release-loader.js', release_loader_script)
     app.router.add_get('/update-cutscene.js', update_cutscene_script)
     app.router.add_get('/levels.js', levels_script)
+    app.router.add_get('/pixel-caves.js', pixel_caves_script)
+    app.router.add_get('/cattok-lite/{name}', cattok_lite_script)
     app.router.add_get('/voice-lines.js', voice_lines_script)
     app.router.add_get('/social-accounts.js', social_script)
     app.router.add_get('/tag-map', tag_map)
@@ -907,6 +923,7 @@ def make_app():
     install_update_requests(app, ACCOUNTS)
     if not DEMO:  # staged updates and the 🚀 Release button belong to the main game only
         install_releases(app, ACCOUNTS)
+        install_cattok(app, ACCOUNTS, clean_chat)
     SOCIAL.routes(app)
     app.cleanup_ctx.append(ACCOUNTS.startup)
     app.cleanup_ctx.append(background)

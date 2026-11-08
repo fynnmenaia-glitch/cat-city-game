@@ -181,6 +181,8 @@ const SIDE=[
 ];
 window.addEventListener('catcity:wrangler-camp-loot',()=>{if(s.sideQuests.camp==='active'){s.sideCamp=true;core.persist()}});
 function sideFor(npc){return SIDE.find(q=>q.npc===npc&&s.sideQuests[q.id]!=='done')}
+// Other add-ons can add more side quests (Cat Tok adds a second one for each NPC): catCitySideQuests.add({...same fields}).
+window.catCitySideQuests={list:SIDE,add(q){if(q&&q.id&&!SIDE.some(x=>x.id===q.id))SIDE.push(q)},doneFor:npc=>SIDE.filter(q=>q.npc===npc&&s.sideQuests[q.id]==='done').length,done:id=>s.sideQuests[id]==='done'};
 function sideHud(){const q=SIDE.find(q=>s.sideQuests[q.id]==='active');return q?'<br>📜 '+q.title+': '+q.prog():''}
 function nearNpc(){let best=null,bd=70;for(const [id,p] of Object.entries(NPC_AT)){const d=Math.hypot(s.x-p.x,s.y-p.y);if(d<bd){bd=d;best=id}}return best}
 let chatOnce=false;

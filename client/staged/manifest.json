@@ -53,6 +53,60 @@
    "files": [
     "cattok-4-news.js"
    ]
+  },
+  {
+   "id": "cattok-5-clock",
+   "title": "🕐 Game clock",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-5-clock.js"
+   ]
+  },
+  {
+   "id": "cattok-6-shop",
+   "title": "🛍️ Cat Tok Shop + parcels",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-6-shop.js"
+   ]
+  },
+  {
+   "id": "cattok-7-create",
+   "title": "🎬 Make Cat Tok videos + sponsors",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-7-create.js"
+   ]
+  },
+  {
+   "id": "cattok-8-golive",
+   "title": "🔴 Go LIVE + gifts",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-8-golive.js"
+   ]
+  },
+  {
+   "id": "cattok-9-sales",
+   "title": "🍑 Peachy Paws LIVE + 🌌 Galaxy's ASMR LIVE",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-9-sales.js"
+   ]
+  },
+  {
+   "id": "cattok-10-trailer",
+   "title": "🎬 Cat Tok trailer",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-10-trailer.js"
+   ]
   }
  ]
 }
