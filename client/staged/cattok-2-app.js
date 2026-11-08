@@ -159,6 +159,8 @@ function open(view){
  const doSearch=()=>search(app.querySelector('.ct-sbar input').value);app.querySelector('[data-sgo]').onclick=doSearch;app.querySelector('.ct-sbar input').onkeydown=e=>{if(e.key==='Enter')doSearch()};
  buildFeed();go('home');updateBadge();
  addEventListener('keydown',keys,true);
+ // The demo's small Cat Tok: no making videos and no lives.
+ if(window.CAT_TOK_LITE){app.querySelector('[data-n="create"]')?.remove();app.querySelector('[data-live]')?.remove()}
 }
 function close(){cancelAnimationFrame(raf);observer?.disconnect();removeEventListener('keydown',keys,true);app?.remove();app=null;visible=null}
 function keys(e){if(!app||page!=='home'||app.querySelector('.ct-sheet.on')||app.querySelector('.ct-search.on')||document.querySelector('.ct-liveroom'))return;const k=e.key;

@@ -48,6 +48,7 @@ Cat City is a browser game for phone and PC (iPhone Safari and Windows Chrome ar
 | `ai_cats.py` | Creates the public AI lobbies. |
 | `bot_adventure.py` | AI worker cats that gather wood/stone and drop loot. |
 | `tag_house.py` | Tag House mini-game (Pause → Play Tag House). |
+| `cattok.py` | 📱 Cat Tok server (main game only): players' videos (`/api/cattok/video…`), the owner's ✔️ verification (`/api/cattok/verify`), LIVE streams (`/api/cattok/live…`, gifts pay the streamer fish). Saved on the `cattok-data` branch with GITHUB_REPORT_TOKEN (fallback `cattok_state.json`). Tests: tests/test_cattok.py. |
 
 ### Client (`client/`)
 - **`index.html`** — the core game: map, cats, shop, saves, cutscenes, boss fights and the story.
@@ -168,6 +169,19 @@ _(Nothing right now. Write your name, the branch, and which files you're touchin
 ---
 
 ## Work log (newest first)
+
+### 2026-11-08 — Claude: Cat Tok finished (parts 5–10, staged) + readable text + pixel caves (branch `feature/cat-tok-finish-2026-11-08`)
+Sofia described the rest of Cat Tok in chat (the old plan doc wasn't in the repo) and sent screen recordings of TikTok and the Lipton iced tea live. **All Cat Tok parts are staged: press 🚀 Release update to put them in the game.**
+- **Live straight away (not staged):** `client/pixel-caves.js` draws the world caves and the Ghost 2.0 event cave as pixel art (were a smooth 🕳️ emoji / smooth ovals). `cattok.py` server routes. Small hooks: `catCitySideQuests` (playtest-features.js, lets add-ons add side quests), `catCityCozy` + `catCityDecorArt` (cozy-update.js, Cat Tok furniture in homes, usable floor items).
+- **Readable Cat Tok text:** pixel-emoji.js turns any canvas font naming system-ui / sans-serif / Arial / Helvetica into the pixel font, and Cat Tok drew text on 180 px canvases. `CatTok.crisp(cv)` (part 2) now draws all text on a sharp 4× overlay canvas with a font list that avoids those names. Use `T.drawCrisp` / `T.crisp` for any new Cat Tok canvas.
+- **cattok-5-clock.js:** `catCityClock` (one in-game day = 300 s, same as the existing sky; midnight = darkest). Shown next to the day/night label and on the phone.
+- **cattok-6-shop.js:** Shop tab (pay with 🐟): Galaxy Treats, Peachy Paws Iced Tea (made-up brand), snacks, decor, toys, Purrstation Pocket console (Fish Catch mini-game). Flash sale per in-game day, vouchers, basket, orders. Parcels arrive after 1 in-game day (top pop-up + voice k05) outside your first home, else the village square; E/🐾 opens a first-person unboxing (cut the tape with a paw, drag 4 flaps). Snacks → 🍲 Snacks (heal); things → Your orders → 🧸 My stuff → Put in home. Saved in `s.ctShop`.
+- **cattok-7-create.js:** ➕ Create. On a set (10 templates × 12 sets × any of the 6 cats) or record gameplay (close-up around your cat, 2 fps, ≤30 s, packed into one JPEG sheet ≤165 KB). Voice off by default (MediaRecorder, ≤130 KB, uploaded separately). Sets: Village/News free, Home needs a home, biome sets need the full biome armour set, TV Glitch needs the full Glitched set, Castle needs the castle mission, Admin = owner (owner has all). Sponsors: 2 side quests done for Marmalade/Pebble/Luna/Forge/SlayCat = 2× boost; all 4 Biscuit & Birman missions (castle, `castle.m2`, `castle.m3`, `m4.stage==='done'`) = Biscuit 3×. Each of those NPCs got a second, Cat Tok side quest. Owner sees ✔️ Verify on players' videos and 🛡️ Creators in their profile. Guests are identified by a random id in localStorage (`catcity_cattok_id`).
+- **cattok-8-golive.js:** owner + verified players go LIVE (on a set with pose/quick-line buttons, or gameplay frames every second). Real lives show in everyone's feed; preset quick comments, hearts and 🎁 gifts (cost the viewer fish, paid to the streamer). Part 3 got `it.real` to switch off the pretend viewers.
+- **cattok-9-sales.js:** 🍑 Peachy Paws LIVE (copy of the Lipton live layout, Marmalade + Luna hosts, flash-sale card with countdown and Buy, 25 hearts = once-a-day giveaway) and 🌌 Galaxy's ASMR LIVE (begs for gifts, Galaxy Treats flash sale, soft tap/crunch sounds).
+- **cattok-10-trailer.js:** the trailer with k01–k07, plays after the UPDATE! cutscene on release and from the pinned trailer video.
+- **Demo:** tools/build_demo.py copies parts 1, 2, 5, 6 into `demo/cattok-lite/` and loads them directly (no ➕ and no LIVE tab: `window.CAT_TOK_LITE`). Server route `/cattok-lite/{name}`.
+- Next / ideas: Galaxy's lines could use Sofia's voice if she records them; more phone apps after Cat Tok (Sofia wants more apps).
 
 ### 2026-11-06 — Claude: Cat Tok parts 1–4 (staged, waiting for 🚀 Release)
 Plan: project doc claude/cat-tok-plan.md. All staged in client/staged/ + manifest (ids cattok-1-phone … cattok-4-news):

@@ -98,6 +98,15 @@
    "files": [
     "cattok-9-sales.js"
    ]
+  },
+  {
+   "id": "cattok-10-trailer",
+   "title": "🎬 Cat Tok trailer",
+   "kind": "feature",
+   "issue": null,
+   "files": [
+    "cattok-10-trailer.js"
+   ]
   }
  ]
 }

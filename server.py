@@ -398,6 +398,15 @@ async def voice_lines_script(_request):
     return web.FileResponse(PUBLIC / 'voice-lines.js', headers={'Cache-Control': 'no-cache'})
 
 
+async def cattok_lite_script(request):
+    # The demo's small Cat Tok (tools/build_demo.py copies four Cat Tok parts into demo/cattok-lite/).
+    name = request.match_info['name']
+    path = PUBLIC / 'cattok-lite' / name
+    if not re.fullmatch(r'cattok-[0-9]+-[a-z]+\.js', name) or not path.is_file():
+        raise web.HTTPNotFound()
+    return web.FileResponse(path, headers={'Cache-Control': 'no-cache'})
+
+
 async def pixel_caves_script(_request):
     return web.FileResponse(PUBLIC / 'pixel-caves.js', headers={'Cache-Control': 'no-cache'})
 
@@ -899,6 +908,7 @@ def make_app():
     app.router.add_get('/update-cutscene.js', update_cutscene_script)
     app.router.add_get('/levels.js', levels_script)
     app.router.add_get('/pixel-caves.js', pixel_caves_script)
+    app.router.add_get('/cattok-lite/{name}', cattok_lite_script)
     app.router.add_get('/voice-lines.js', voice_lines_script)
     app.router.add_get('/social-accounts.js', social_script)
     app.router.add_get('/tag-map', tag_map)
