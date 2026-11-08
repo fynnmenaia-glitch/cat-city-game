@@ -31,6 +31,7 @@ const css=document.createElement('style');css.id='cc-cattok-style';css.textConte
 .ct-feed::-webkit-scrollbar{display:none}
 .ct-item{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;background:#111}
 .ct-item canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;object-fit:cover}
+.ct-item canvas.ct-txt,canvas.ct-txt{image-rendering:auto;pointer-events:none}
 .ct-shade{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(transparent,#0009);pointer-events:none}
 .ct-shadetop{position:absolute;left:0;right:0;top:0;height:120px;background:linear-gradient(#0007,transparent);pointer-events:none}
 .ct-top{position:absolute;left:0;right:0;top:calc(44px + env(safe-area-inset-top));z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 12px;pointer-events:none}
@@ -186,6 +187,24 @@ function buildFeed(){if(!app)return;const feed=app.querySelector('.ct-feed');obs
  if(!L.length){feed.innerHTML='<div class="ct-empty">'+(tab==='following'?'<div style="font-size:48px">👥</div><b>Follow cats to see their posts here</b><span>Tap ➕ on someone\'s picture to follow them.</span>':tab==='friends'?'<div style="font-size:48px">🤝</div><b>No friends\' posts yet</b><span>When friends in your online room post, they show up here.</span>':'<b>Nothing here yet</b>')+'</div>';return}
  observer=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting&&e.intersectionRatio>.6){visible=e.target;const it=items.find(i=>i.id===visible.dataset.id);it?.onShow?.(visible)}},{root:feed,threshold:[.6]});
  for(const it of L){const el=card(it);feed.append(el);observer.observe(el)}visible=feed.firstElementChild;startLoop()}
+// Crisp text: the pixel art is drawn 180 px wide and scaled up, which made words blurry and blocky.
+// crisp(cv) adds a sharp, high-resolution canvas on top; any text the scene draws goes there in a normal font.
+const CRISP_K=4,MIRROR=new Set(['save','restore','translate','scale','rotate','transform','beginPath','closePath','rect','moveTo','lineTo','arc','arcTo','ellipse','quadraticCurveTo','bezierCurveTo','clip']),TEXTFN=new Set(['fillText','strokeText','measureText']),TPROPS=new Set(['textAlign','textBaseline','fillStyle','strokeStyle','lineWidth','lineJoin','globalAlpha','shadowColor','shadowBlur','shadowOffsetX','shadowOffsetY','direction','letterSpacing']);
+const READ_FONT='-apple-system,system-ui,"Segoe UI",Roboto,sans-serif';
+function fixFont(f){return String(f).replace(/"Cat City Pixel"\s*,?\s*monospace|"Cat City Pixel"|\bmonospace\b/g,READ_FONT)}
+function crisp(cv,k=CRISP_K,txt){if(cv.__crisp&&!txt)return cv.__crisp;const g=cv.getContext('2d');
+ if(!txt){txt=document.createElement('canvas');txt.className='ct-txt';cv.after(txt)}
+ txt.width=cv.width*k;txt.height=cv.height*k;const t=txt.getContext('2d');t.lineJoin='round';
+ const syncT=()=>{const m=g.getTransform();t.setTransform(m.a*k,m.b*k,m.c*k,m.d*k,m.e*k,m.f*k)};
+ const px=new Proxy(g,{get(o,p){if(p==='canvas')return cv;if(TEXTFN.has(p))return (...a)=>t[p](...a);
+   if(p==='setTransform'||p==='resetTransform')return (...a)=>{g[p](...a);syncT()};
+   if(MIRROR.has(p))return (...a)=>{t[p](...a);return g[p](...a)};
+   const v=o[p];return typeof v==='function'?v.bind(o):v},
+  set(o,p,v){if(p==='font'){o.font=v;t.font=fixFont(v);return true}if(TPROPS.has(p))t[p]=v;o[p]=v;return true}});
+ const begin=()=>{t.setTransform(1,0,0,1,0,0);t.globalAlpha=1;t.clearRect(0,0,txt.width,txt.height);t.setTransform(k,0,0,k,0,0);g.imageSmoothingEnabled=false};
+ if(txt.width!==cv.width*k){txt.width=cv.width*k;txt.height=cv.height*k}
+ return cv.__crisp={g:px,begin,txt,k}}
+function drawCrisp(cv,it,t){const c=crisp(cv);if(c.txt.width!==cv.width*c.k){c.txt.width=cv.width*c.k;c.txt.height=cv.height*c.k}c.begin();c.g.save();try{it.draw(c.g,cv.width,cv.height,t,it)}catch(e){}c.g.restore()}
 // Canvases match the phone screen's shape so nothing gets cropped: always 180 pixels wide.
 function screenH(){const f=app?.querySelector('.ct-feed');const r=f&&f.clientWidth?f.clientHeight/f.clientWidth:16/9;return Math.max(240,Math.min(420,Math.round(180*r)))}
 function card(it){const el=document.createElement('div');el.className='ct-item';el.dataset.id=it.id;
@@ -219,10 +238,10 @@ function toggleLike(it,el){st.likes[it.id]=!st.likes[it.id];save();const b=el.qu
 function burst(el,e){const r=el.getBoundingClientRect(),h=document.createElement('div');h.className='ct-heart';h.textContent='❤️';h.style.left=(e.clientX-r.left)+'px';h.style.top=(e.clientY-r.top)+'px';el.append(h);setTimeout(()=>h.remove(),850)}
 function flashPause(el,p){let d=el.querySelector('.ct-pause');if(!d){d=document.createElement('div');d.className='ct-pause';d.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:64px;opacity:.75;pointer-events:none;z-index:3;text-shadow:0 2px 8px #000';el.append(d)}d.textContent=p?'▶':'';}
 // Only the item on screen animates (and the ones next to it draw once), to keep phones cool.
-function startLoop(){cancelAnimationFrame(raf);const t0=performance.now();const loop=now=>{if(!app||page!=='home')return;const el=visible;if(el){const it=items.find(i=>i.id===el.dataset.id);if(it&&!it.paused){const cv=el.querySelector('canvas'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;try{it.draw(g,cv.width,cv.height,(now-t0)/1000,it)}catch(err){}}}
+function startLoop(){cancelAnimationFrame(raf);const t0=performance.now();const loop=now=>{if(!app||page!=='home')return;const el=visible;if(el){const it=items.find(i=>i.id===el.dataset.id);if(it&&!it.paused)drawCrisp(el.querySelector('canvas'),it,(now-t0)/1000)}
   raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);
  // first frames for the rest
- setTimeout(()=>app?.querySelectorAll('.ct-item').forEach(el=>{if(el===visible)return;const it=items.find(i=>i.id===el.dataset.id),cv=el.querySelector('canvas');try{it.draw(cv.getContext('2d'),cv.width,cv.height,1.5,it)}catch(e){}}),50)}
+ setTimeout(()=>app?.querySelectorAll('.ct-item').forEach(el=>{if(el===visible)return;const it=items.find(i=>i.id===el.dataset.id);if(it)drawCrisp(el.querySelector('canvas'),it,1.5)}),50)}
 
 // ---------------------------------------------------------------- comments + share
 const NAMES=['purrfectpaws','whisker.wiz','fishfan99','mochi_moments','tuna.queen','zoomiesonly','biscuitstan','catnipkid','luna.lover','meowmeow.mp4','pawsandplay','sleepy.kit','starryfur','tabbytalk','yarnbandit','clawdia','furball.fm','kittenkaboodle'];
@@ -251,7 +270,7 @@ function search(q){const box=app.querySelector('.ct-sres');q=q.trim().toLowerCas
  box.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{app.querySelector('.ct-search').classList.remove('on');jumpTo(b.dataset.id)})}
 function jumpTo(id){tab='foryou';liveOnly=false;app.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x.dataset.t==='foryou'));go('home');buildFeed();const feed=app.querySelector('.ct-feed'),el=feed.querySelector('[data-id="'+CSS.escape(id)+'"]');if(el){feed.prepend(el);feed.scrollTop=0;visible=el}const it=items.find(i=>i.id===id);if(it?.kind==='live'&&window.CatTok.openLive)window.CatTok.openLive(it)}
 const thumbCache={};
-function thumb(it){if(thumbCache[it.id])return thumbCache[it.id];const c=document.createElement('canvas');c.width=it.w||180;c.height=it.h||320;const g=c.getContext('2d');g.imageSmoothingEnabled=false;try{it.draw(g,c.width,c.height,2,it)}catch(e){}return thumbCache[it.id]=c.toDataURL('image/jpeg',.7)}
+function thumb(it){if(thumbCache[it.id])return thumbCache[it.id];const c=document.createElement('canvas');c.width=it.w||180;c.height=it.h||320;const tx=document.createElement('canvas'),k=2,cr=crisp(c,k,tx);cr.begin();try{it.draw(cr.g,c.width,c.height,2,it)}catch(e){}const out=document.createElement('canvas');out.width=c.width*k;out.height=c.height*k;const o=out.getContext('2d');o.imageSmoothingEnabled=false;o.drawImage(c,0,0,out.width,out.height);o.drawImage(tx,0,0);return thumbCache[it.id]=out.toDataURL('image/jpeg',.72)}
 
 // ---------------------------------------------------------------- inbox + profile
 function pushInbox(icon,title,text,av){st.inbox.unshift({icon,title,text,av,at:Date.now()});st.inbox=st.inbox.slice(0,60);save();updateBadge();window.CatPhone?.notify(title,text)}
@@ -294,7 +313,7 @@ const starters=[
 for(const v of starters)addItem({kind:'video',...v});
 
 // ---------------------------------------------------------------- the app on the phone
-const api={screenH:()=>screenH(),addItem,items,open:()=>window.CatPhone?.open('cattok'),inbox:pushInbox,avatar,rng,state:st,save,refresh:buildFeed,pageHooks,go:p=>app&&go(p),toast,caption,sky,mix,R,fmt,myName,myCat,sheet,closeSheet,thumb,get app(){return app}};
+const api={crisp,drawCrisp,fixFont,screenH:()=>screenH(),addItem,items,open:()=>window.CatPhone?.open('cattok'),inbox:pushInbox,avatar,rng,state:st,save,refresh:buildFeed,pageHooks,go:p=>app&&go(p),toast,caption,sky,mix,R,fmt,myName,myCat,sheet,closeSheet,thumb,get app(){return app}};
 window.CatTok=api;
 function register(){window.CatPhone?.registerApp({id:'cattok',name:'Cat Tok',icon:window.__catPhoneIcons?.tok||'',open(view){openCount++;open(view)},close})}
 if(window.CatPhone)register();else addEventListener('catcity:phone-ready',register,{once:true});

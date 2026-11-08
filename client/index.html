@@ -1644,9 +1644,10 @@ body.in-interior #mobile,body.in-interior #interact,body.in-interior #sprint{dis
     if(typeof ctx==='undefined') return;
     const camX=s.x-core.W/2,camY=s.y-core.H/2;
     caveDefs.forEach(c=>{
-      const sx=c.x-camX,sy=c.y-camY; if(sx<-30||sx>core.W+30||sy<-30||sy>core.H+30) return;
-      ctx.font='26px system-ui'; ctx.fillText('🕳️',sx-12,sy+8);
-      ctx.fillStyle='#ffffff'; ctx.font='12px system-ui'; ctx.fillText(c.name,sx-26,sy-16);
+      const sx=c.x-camX,sy=c.y-camY; if(sx<-70||sx>core.W+70||sy<-40||sy>core.H+90) return;
+      if(window.catCityPixelCave){window.catCityPixelCave.draw(ctx,sx,sy+22,{theme:c.id,scale:3});ctx.save();ctx.textAlign='center';ctx.font='bold 12px system-ui';ctx.lineWidth=3;ctx.strokeStyle='#241c30';ctx.strokeText(c.name,sx,sy-62);ctx.fillStyle='#ffffff';ctx.fillText(c.name,sx,sy-62);ctx.restore();}
+      else{ctx.font='26px system-ui'; ctx.fillText('🕳️',sx-12,sy+8);
+      ctx.fillStyle='#ffffff'; ctx.font='12px system-ui'; ctx.fillText(c.name,sx-26,sy-16);}
     });
     // Gentle minimap hint for enterable doors nearby.
     Object.values(buildingDoors).forEach(d=>{
@@ -2820,4 +2821,5 @@ body.start-menu-open #catcity-online-status,body.settings-open #catcity-online-s
 <script src="/release-loader.js" defer></script>
 <script src="/levels.js" defer></script>
 <script src="/voice-lines.js" defer></script>
+<script src="/pixel-caves.js" defer></script>
 </body></html>

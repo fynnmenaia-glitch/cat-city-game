@@ -11,6 +11,7 @@ const css=document.createElement('style');css.textContent=`
 .ct-liveroom{position:absolute;inset:0;z-index:28;background:#000;color:#fff;overflow:hidden;font:14px -apple-system,system-ui,sans-serif;animation:ctIn .22s ease-out}
 @keyframes ctIn{from{opacity:0;transform:scale(1.04)}}
 .ct-liveroom canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;object-fit:cover}
+.ct-liveroom canvas.ct-txt{image-rendering:auto;pointer-events:none}
 .ct-lr-top{position:absolute;left:8px;right:8px;top:calc(48px + env(safe-area-inset-top));display:flex;align-items:center;gap:6px;z-index:3}
 .ct-lr-host{display:flex;align-items:center;gap:6px;background:#0006;border-radius:20px;padding:3px 4px 3px 3px;max-width:62%}
 .ct-lr-host i{width:32px;height:32px;border-radius:50%;flex:none;background:#333 center/cover;image-rendering:pixelated}
@@ -74,8 +75,8 @@ function openLive(it){closeLive();const app=T.app;if(!app)return;const L=state(i
  timers.push(setInterval(()=>{L.viewers=Math.max(20,Math.round(L.viewers*(.985+r()*.03)+(r()-.45)*8));room.querySelector('[data-v]').textContent=T.fmt(L.viewers)},1500));
  timers.push(setInterval(()=>{const n=NAMES[Math.floor(r()*NAMES.length)];if(r()<.18)comment(n,'joined 👋',null,false,true);else comment(n,pool[Math.floor(r()*pool.length)])},1100));
  timers.push(setInterval(()=>{if(r()<.7){floatHeart();L.likes+=Math.floor(1+r()*4);room.querySelector('[data-likes]').textContent='❤ '+T.fmt(L.likes)}},420));
- const cv=room.querySelector('canvas'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;const t0=performance.now();
- const loop=now=>{if(!room)return;try{it.draw(g,cv.width,cv.height,(now-t0)/1000,it)}catch(e){}raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);
+ const cv=room.querySelector('canvas');const t0=performance.now();
+ const loop=now=>{if(!room)return;T.drawCrisp(cv,it,(now-t0)/1000);raf=requestAnimationFrame(loop)};raf=requestAnimationFrame(loop);
  addEventListener('keydown',liveKeys,true);it.onEnter?.(L,room)}
 function liveKeys(e){if(!room)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeLive()}}
 function closeLive(){if(inRoom){inRoom.inRoom=false;inRoom=null}cancelAnimationFrame(raf);timers.forEach(clearInterval);timers=[];removeEventListener('keydown',liveKeys,true);room?.remove();room=null}
